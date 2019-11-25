@@ -24,13 +24,17 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
   public addToList(){
-    if (this.task && !this.list.includes(this.task)) {
+    if (this.task && this.list.includes(this.task)) {
+      this.task = '';
+    } else {
       this.list.push(this.task);
-      this.task = "";
     }
 
   }
   public removeFromList(x){
     this.list.splice(x,1);
+  }
+  public deleteAll(){
+    this.list = [];
   }
 }

@@ -1,0 +1,76 @@
+
+<div class="container">
+
+
+  <div class="row">
+    <div class="col-12">
+      <h1>Todos</h1>
+      <h2>{{firstName}} {{lastName}}</h2>
+      <h2>{{name}}</h2>
+    </div>
+  </div>
+
+
+
+    <div class="row">
+      <div class="col-12">
+        <ul class="list-group">
+          <li  *ngFor="let task of uncompletedTasks"
+
+               class="list-group-item">
+            <span class="badge badge-info badge-pill mr-3">
+              <i class="fa fa-calendar"></i>
+              {{ task.dueDate | date:'short'}}
+            </span>
+            {{ task.title }}
+            {{task.completed}}
+            <button
+              [swal]="swallOptions"
+              (confirm) = "removeTask(task._id)"
+              class = "btn btn-danger btn-sm ml-2 float-right">
+              <i class="fa fa-remove"></i>
+            </button>
+            <button
+              (click) = "completeTask(task)"
+              class = "btn btn-success btn-sm ml-2 float-right">
+              <i class="fa fa-check"></i>
+            </button>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-12">
+        <h1>Completed</h1>
+        <ul class="list-group">
+          <li
+            *ngFor=" let task of completedTasks"
+            class="list-group-item">
+            {{task.title}}
+
+            <button
+              [swal]="swallOptions"
+              (confirm) = "removeTask(task._id)"
+              class = "btn btn-danger btn-sm ml-2 float-right">
+              <i class="fa fa-remove"></i>
+            </button>
+            <button
+              (click) = "task.completed = false"
+              class = "btn btn-info btn-sm ml-2 float-right">
+              <i class="fa fa-arrow-up"></i>
+            </button>
+
+
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+
+
