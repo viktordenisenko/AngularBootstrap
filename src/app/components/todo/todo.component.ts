@@ -13,8 +13,13 @@ export class TodoComponent implements OnInit {
     icon: 'error'
 
   }
+  public search: string = '';
   public firstName: string = "George";
   public lastName: string = "pago";
+  // modal form variables
+  public taskTitle: string = '';
+  public taskDueDate: Date;
+
   public numbers: number[] = [1,2,3,4,5,6,7];
   public todos: ITask[] = [
     {
@@ -69,14 +74,29 @@ export class TodoComponent implements OnInit {
 
   ngOnInit() {
   }
+  public addNewTask() {
 
-  public removeTask(_id:string){
-    const thesi = this.todos.findIndex(i=>i._id === _id);
+      const newObj: ITask = {
+        // _id: this.todos.length + 1 + ''
+        _id: (this.todos.length + 1).toString(),
+        completed: false,
+        dueDate:  this.taskDueDate,
+        title: this.taskTitle
+      }
+      this.todos.push(newObj);
+      this.taskTitle = '';
+
+  }
+  public removeTask( _id: string){
+    const thesi = this.todos.findIndex(i => i._id === _id);
     this.todos.splice(thesi,1);
   }
 
   public completeTask(task: ITask) {
     task.completed = true;
+  }
+  public doSearch() {
+
   }
 
 }

@@ -1,76 +1,143 @@
-
 <div class="container">
+  <div class="row mt-2">
+    <div class="input-group col-4 offset-8 ">
+      <input type="text" [(ngModel)]="search"  class = "form-control" placeholder =" your text goes here.."/>
+      <button type="button" (click)="doSearch()" class="btn btn-info float-right">Search</button>
+
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 mt-2">
+      <table class="table table-striped table-dark">
+        <thead >
+        <tr class="text-center">
+          <th scope="col ">Id</th>
+          <th scope="col ">Title</th>
+          <th scope="col ">DueDate</th>
+          <th scope="col ">Completed</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <!-- epeidi einai object o pinakas baxoume brackets-->
+        <tr *ngFor="let item of todos | filterBy:{title:search}" class="text-center">
+          <th scope="col" > {{ item._id}}</th>
+          <th scope="col">{{ item.title}}</th>
+          <th scope="col">{{ item.dueDate | date: "h:mm a d MMM"}}</th>
+          <th scope="col">{{ item.completed === true? " yes": "No"}}</th>
+
+        </tr>
+
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-9 mt-2">
+      <h1>Todos</h1>
+    </div>
+    <div class="col-3 mt-2">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary mt-2 mb-2 " data-toggle="modal" data-target="#exampleModalCenter">
+        <i class ="fa fa-plus"></i>
+        Add to ToDoList
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+           aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Add to ToDoList a new task</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="taskTitle">Task title</label>
+                <input type="text"  [(ngModel)]="taskTitle" class="form-control" id="taskTitle">
+                <label for="taskDueDate">Task title</label>
+                <input type="datetime-local" [(ngModel)]="taskDueDate " class="form-control" id="taskDueDate">
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+              <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addNewTask()">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End Modal -->
+
+  </div>
 
 
   <div class="row">
     <div class="col-12">
-      <h1>Todos</h1>
-      <h2>{{firstName}} {{lastName}}</h2>
-      <h2>{{name}}</h2>
-    </div>
-  </div>
+      <ul class="list-group">
+        <li *ngFor="let task of uncompletedTasks"
 
-
-
-    <div class="row">
-      <div class="col-12">
-        <ul class="list-group">
-          <li  *ngFor="let task of uncompletedTasks"
-
-               class="list-group-item">
+            class="list-group-item">
             <span class="badge badge-info badge-pill mr-3">
               <i class="fa fa-calendar"></i>
               {{ task.dueDate | date:'short'}}
             </span>
-            {{ task.title }}
-            {{task.completed}}
-            <button
-              [swal]="swallOptions"
-              (confirm) = "removeTask(task._id)"
-              class = "btn btn-danger btn-sm ml-2 float-right">
-              <i class="fa fa-remove"></i>
-            </button>
-            <button
-              (click) = "completeTask(task)"
-              class = "btn btn-success btn-sm ml-2 float-right">
-              <i class="fa fa-check"></i>
-            </button>
-          </li>
+          {{ task.title }}
+          {{task.completed}}
+          <button
+            [swal]="swallOptions"
+            (confirm)="removeTask(task._id)"
+            class="btn btn-danger btn-sm ml-2 float-right">
+            <i class="fa fa-remove"></i>
+          </button>
+          <button
+            (click)="completeTask(task)"
+            class="btn btn-success btn-sm ml-2 float-right">
+            <i class="fa fa-check"></i>
+          </button>
+        </li>
 
-        </ul>
-      </div>
+      </ul>
     </div>
-
-
-
-    <div class="row">
-      <div class="col-12">
-        <h1>Completed</h1>
-        <ul class="list-group">
-          <li
-            *ngFor=" let task of completedTasks"
-            class="list-group-item">
-            {{task.title}}
-
-            <button
-              [swal]="swallOptions"
-              (confirm) = "removeTask(task._id)"
-              class = "btn btn-danger btn-sm ml-2 float-right">
-              <i class="fa fa-remove"></i>
-            </button>
-            <button
-              (click) = "task.completed = false"
-              class = "btn btn-info btn-sm ml-2 float-right">
-              <i class="fa fa-arrow-up"></i>
-            </button>
-
-
-          </li>
-        </ul>
-      </div>
-    </div>
-
-
   </div>
+
+
+  <div class="row">
+    <div class="col-12">
+      <h1>Completed</h1>
+      <ul class="list-group">
+        <li
+          *ngFor=" let task of completedTasks"
+          class="list-group-item">
+          {{task.title}}
+
+          <button
+            [swal]="swallOptions"
+            (confirm)="removeTask(task._id)"
+            class="btn btn-danger btn-sm ml-2 float-right">
+            <i class="fa fa-remove"></i>
+          </button>
+          <button
+            (click)="task.completed = false"
+            class="btn btn-info btn-sm ml-2 float-right">
+            <i class="fa fa-arrow-up"></i>
+          </button>
+
+
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+</div>
 
 
